@@ -1,0 +1,63 @@
+﻿@page "/propietarios"
+@using Veterinaria.Aplication.DTOS
+@using Veterinaria.Frontend
+@inject PropietarioService PropietarioService
+@inject NavigationManager Nav
+
+<h3>Propietarios</h3>
+
+<button class="btn btn-primary" @onclick="Create">Nuevo Propietario</button>
+
+@if (propietarios == null)
+{
+    <p>Cargando...</p>
+}
+else
+{
+    <table class="table table-striped mt-3">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Cédula</th>
+                <th>Teléfono</th>
+                <th>Dirección</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var p in propietarios)
+            {
+                <tr>
+                    <td>@p.PropietatioId</td>
+                    <td>@p.Nombre</td>
+                    <td>@p.Cedula</td>
+                    <td>@p.Telefono</td>
+                    <td>@p.Direccion</td>
+                    <td>
+                        <button class="btn btn-warning btn-sm" @onclick="() => Edit(p.PropietatioId)">Editar</button>
+                        <button class="btn btn-danger btn-sm" @onclick="() => Delete(p.PropietatioId)">Eliminar</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    List<PropietarioDto> propietarios;
+
+    protected override async Task OnInitializedAsync()
+    {
+        propietarios = await PropietarioService.GetAllAsync();
+    }
+
+    void Create() => Nav.NavigateTo("/propietarios/create");
+    void Edit(int id) => Nav.NavigateTo($"/propietarios/edit/{id}");
+
+    async Task Delete(int id)
+    {
+        await PropietarioService.DeleteAsync(id);
+        propietarios = await PropietarioService.GetAllAsync();
+    }
+}

@@ -1,0 +1,57 @@
+﻿@page "/propietarios/create"
+@using Veterinaria.Aplication.DTOS
+@using Veterinaria.Frontend
+@inject PropietarioService PropietarioService
+@inject NavigationManager Nav
+
+<h3>Nuevo Propietario</h3>
+
+<EditForm Model="propietario" OnValidSubmit="Save">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="mb-3">
+        <label>Nombre:</label>
+        <InputText class="form-control" @bind-Value="propietario.Nombre" />
+    </div>
+
+    <div class="mb-3">
+        <label>Cédula:</label>
+        <InputText class="form-control" @bind-Value="propietario.Cedula" />
+    </div>
+
+    <div class="mb-3">
+        <label>Teléfono:</label>
+        <InputText class="form-control" @bind-Value="propietario.Telefono" />
+    </div>
+
+    <div class="mb-3">
+        <label>Dirección:</label>
+        <InputText class="form-control" @bind-Value="propietario.Direccion" />
+    </div>
+
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary" type="button" @onclick="Cancel">Cancelar</button>
+</EditForm>
+
+@code {
+    PropietarioDto propietario = new();
+
+    protected override Task OnInitializedAsync()
+    {
+        // No hay listas como vehículos o mecánicos,
+        // pero mantengo la estructura por si luego agregas selects.
+        return Task.CompletedTask;
+    }
+
+    async Task Save()
+    {
+        await PropietarioService.CreateAsync(propietario);
+        Nav.NavigateTo("/propietarios");
+    }
+
+    void Cancel()
+    {
+        Nav.NavigateTo("/propietarios");
+    }
+}

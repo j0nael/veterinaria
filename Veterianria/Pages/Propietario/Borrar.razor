@@ -1,0 +1,20 @@
+﻿@page "/propietarios/delete/{id:int}"
+@using Veterinaria.Frontend
+@inject PropietarioService OwnerService
+@inject NavigationManager Nav
+
+<h3>Eliminar Propietario</h3>
+
+<p>¿Seguro que deseas eliminar el propietario?</p>
+
+<button class="btn btn-danger" @onclick="Delete">Sí, eliminar</button>
+
+@code {
+    [Parameter] public int id { get; set; }
+
+    async Task Delete()
+    {
+        await OwnerService.DeleteAsync(id);
+        Nav.NavigateTo("/propietarios");
+    }
+}

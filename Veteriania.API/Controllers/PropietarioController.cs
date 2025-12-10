@@ -24,7 +24,7 @@ namespace CRUD_API.Controllers
 
             var dtoList = propietarios.Select(p => new PropietarioDto
             {
-                
+                PropietatioId = p.PropietatioId,
                 Nombre = p.Nombre,
                 Cedula = p.Cedula,
                 Telefono = p.Telefono,
@@ -47,8 +47,9 @@ namespace CRUD_API.Controllers
         [HttpPost]
         public IActionResult CreatePropietario([FromBody] PropietarioDto dto)
         {
-            var propietario = new Propietario
+            var propietario = new PropietarioModel
             {
+                PropietatioId = dto.PropietatioId,
                 Nombre = dto.Nombre,
                 Cedula = dto.Cedula,
                 Telefono = dto.Telefono,
